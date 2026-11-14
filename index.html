@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When does each place reach a warming threshold?</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <div class="controls">
+    <label>Threshold (°C)
+      <input id="thr" type="range" min="0" max="4" step="1" value="1">
+      <output id="thrOut"></output>
+    </label>
+    <label>Emissions <select id="scn"></select></label>
+    <button id="reset" type="button">Reset Map</button>
+  </div>
+
+  <h1 id="title"></h1>
+  <p id="sub"></p>
+
+  <div id="wrap">
+    <svg id="chart" role="img" aria-label="Map of the year each place first reaches the selected warming threshold"></svg>
+    <div id="tip"></div>
+  </div>
+
+  <div id="note">
+    <h2>How this map is made</h2>
+    <ul>
+      <li><strong>Warming</strong> is the change in near-surface air temperature vs the 1850-1900 average of the same grid cell.</li>
+      <li><strong>Averaging in time:</strong> monthly values are averaged to years, then smoothed with a 10 year centered average so one hot year cannot count as a crossing. The last few years use shorter averaging windows.</li>
+      <li><strong>Crossing year:</strong> each cell is colored by the first year that smoothed warming reaches the threshold. Purple means it was already there in 2000, the first year shown. Gray means it never gets there by 2100.</li>
+      <li><strong>1° grid:</strong> the model's native grid is interpolated onto a 1° by 1° grid (180 × 360 cells, each about 100 km wide), close to the model's own resolution, so detail finer than that is not available.</li>
+      <li><strong>Area weighting:</strong> the "% of the globe's area" figures weight each cell by cos(latitude), because cells near the poles cover less area than cells near the equator.</li>
+      <li><strong>One model, one run:</strong> all data comes from a single climate model (GFDL-ESM4, ensemble member r1i1p1f1) under three emissions scenarios. With no spread between models, each map is one possible path, not a forecast, and other models would give different crossing years.</li>
+    </ul>
+    <p>Scroll or pinch to zoom, drag to pan (the map loops sideways), double-click to zoom in.</p>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="data/crossing_data.js"></script>
+<script src="vis.js"></script>
+</body>
+</html>

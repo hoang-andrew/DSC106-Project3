@@ -1,0 +1,32 @@
+:root {
+  --bg: #ffffff; --fg: #1a1a1a; --muted: #6b6b6b; --line: #cfcfcf;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #16161a; --fg: #ececec; --muted: #9a9a9a; --line: #3a3a42; }
+}
+body { margin: 0; padding: 20px; background: var(--bg); color: var(--fg);
+       font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 1rem; margin: 12px 0 0; font-weight: 400; text-align: center; }
+#sub { margin: 0 0 10px; color: var(--fg); font-size: 1rem; text-align: center; }
+.controls { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: center; margin-bottom: 10px; }
+.controls label { display: flex; align-items: center; gap: 10px; font-size: .92rem; }
+.controls output { min-width: 3.2em; font-variant-numeric: tabular-nums; font-weight: 600; }
+select, input[type=range] { font: inherit; }
+select { padding: 4px 8px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; }
+input[type=range] { width: 200px; }
+#wrap { position: relative; }
+svg { width: 100%; height: auto; display: block; }
+svg text { fill: var(--fg); font-family: inherit; }
+.axis path, .axis line { stroke: var(--line); }
+.axis text { fill: var(--muted); font-size: 11px; }
+.label { fill: var(--muted); font-size: 12px; }
+#tip { position: absolute; pointer-events: none; padding: 5px 9px; font-size: 12px; line-height: 1.35;
+       background: var(--fg); color: var(--bg); border-radius: 5px; opacity: 0; transition: opacity .1s;
+       white-space: nowrap; transform: translate(12px, 12px); }
+button { font: inherit; padding: 4px 12px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+#chart .zoomable { cursor: grab; }
+#chart .zoomable:active { cursor: grabbing; }
+#note { color: var(--muted); font-size: .8rem; margin-top: 8px; }
+#err { color: #b3261e; display: none; }
