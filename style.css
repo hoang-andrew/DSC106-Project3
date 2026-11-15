@@ -8,7 +8,7 @@
 body { margin: 0; padding: 20px; background: var(--bg); color: var(--fg);
        font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 main { max-width: 980px; margin: 0 auto; }
-h1 { font-size: 1rem; margin: 12px 0 0; font-weight: 400; text-align: center; }
+#title { font-size: 1rem; margin: 12px 0 0; font-weight: 400; text-align: center; }
 #sub { margin: 0 0 10px; color: var(--fg); font-size: 1rem; text-align: center; }
 .controls { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: center; margin-bottom: 10px; }
 .controls label { display: flex; align-items: center; gap: 10px; font-size: .92rem; }
@@ -30,3 +30,36 @@ button { font: inherit; padding: 4px 12px; background: var(--bg); color: var(--f
 #chart .zoomable:active { cursor: grabbing; }
 #note { color: var(--muted); font-size: .8rem; margin-top: 8px; }
 #err { color: #b3261e; display: none; }
+#writeup {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  line-height: 1.65;
+}
+#writeup h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 24px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--line);
+}
+#writeup h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 32px 0 12px;
+}
+#writeup h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 20px 0 8px;
+}
+#writeup p {
+  margin: 0 0 14px;
+}
+#writeup ul {
+  margin: 0 0 14px 24px;
+  padding: 0;
+}
+#writeup li {
+  margin-bottom: 6px;
+}

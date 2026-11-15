@@ -37,6 +37,86 @@
     </ul>
     <p>Scroll or pinch to zoom, drag to pan (the map loops sideways), double-click to zoom in.</p>
   </div>
+
+  <article id="writeup">
+    <h1>Project Write-Up</h1>
+
+    <h2>1. Motivation</h2>
+    <p>Climate change is often discussed through global averages, such as the goal of limiting warming to 1.5°C or 2°C. However, these averages do not tell the whole story. Different parts of the world experience warming at different rates. For example, land generally warms faster than oceans, and the Arctic experiences warming much faster than many tropical regions.</p>
+    <p>We wanted to explore this difference by asking a more specific question: <strong>When will different parts of the world first reach a given level of warming, and how does that change depending on future emissions?</strong></p>
+    <p>Rather than showing how temperatures change over time in one location, our visualization maps the year each location reaches a selected warming threshold. This allows users to see where warming happens first, how the timing differs across regions, and how much those patterns change under different emissions scenarios.</p>
+    <p>Our goal was to make climate projections easier to explore and understand. By allowing users to change the warming threshold and emissions scenario, we wanted to show that climate change is not experienced equally across the globe and that future outcomes depend partly on the choices we make today.</p>
+
+    <h2>2. Data and Transformations</h2>
+    <p>Our visualization uses climate projections from the GFDL-ESM4 climate model, specifically ensemble member r1i1p1f1, across three emissions scenarios: SSP1-2.6, SSP2-4.5, and SSP5-8.5. We focused on near-surface air temperature to measure how much each location warms over time.</p>
+    <p>Before building the map, we made several transformations to make the data easier to interpret.</p>
+    <p>First, we calculated warming relative to each grid cell's own average temperature from 1850–1900. This pre-industrial baseline allows us to compare warming across different regions without confusing differences in their normal temperatures with actual climate change.</p>
+    <p>Next, we averaged the monthly temperatures into annual values and applied a 10-year centered moving average. We chose this approach because individual years can experience unusually high or low temperatures. Smoothing helps prevent one unusually hot year from being treated as a meaningful climate threshold crossing.</p>
+    <p>We then calculated the first year each location reached its selected warming threshold. This was the most important transformation because it turned a long temperature time series into a single year that could be displayed on a map.</p>
+    <p>Finally, we interpolated the data onto a regular 1° × 1° grid, resulting in 180 × 360 cells. This gave us a consistent grid to render in our visualization while staying close to the climate model's original resolution.</p>
+    <p>For our summary statistics, we also used area weighting based on the cosine of latitude. Since grid cells near the poles cover less physical area than cells near the equator, this prevents polar regions from being overrepresented when calculating the percentage of Earth's area that reaches a threshold.</p>
+
+    <h2>3. Visual Design and Rationale</h2>
+
+    <h3>3.1 Map Design</h3>
+    <p>We chose a world map as our primary visualization because the main question is about where and when warming occurs. A map makes it much easier to recognize geographic patterns, such as differences between land and oceans or between higher and lower latitudes.</p>
+    <p>Each grid cell represents one location, with its color indicating the first year it reaches the selected warming threshold. We used an equirectangular layout because it aligns naturally with our regular latitude-longitude grid and makes it straightforward to display the data.</p>
+    <p>We also made the map interactive. Users can zoom in, pan around, and double-click to explore specific regions. The map also loops horizontally when dragged past the edge, allowing users to move continuously around the globe without encountering an artificial boundary at the International Date Line.</p>
+
+    <h3>3.2 Color Encoding</h3>
+    <p>Since the year of first threshold crossing is a continuous, ordered variable, we chose a sequential color palette using YlOrRd (Yellow-Orange-Red). Earlier crossing years appear darker red, while later years appear lighter yellow. This gives users an intuitive way to compare which regions reach a threshold sooner and which take longer.</p>
+    <p>We also included two colors outside the main scale to represent special cases:</p>
+    <ul>
+      <li><strong>Purple:</strong> Represents locations that had already reached the selected threshold by 2000, the first year displayed in our map. Since we cannot determine their exact crossing year within the displayed period, we gave them a separate color.</li>
+      <li><strong>Gray:</strong> Represents locations that never reach the selected threshold by 2100. This separates locations without a recorded crossing from those that reach it later in the century.</li>
+    </ul>
+    <p>We felt these distinctions were important because assigning these locations ordinary colors on the year scale could be misleading. The legend also makes these categories easy to distinguish from actual crossing years.</p>
+
+    <h3>3.3 Interaction and Additional Information</h3>
+    <p>We designed the visualization around three main controls: a warming threshold slider, an emissions scenario selector, and a reset button.</p>
+    <p>The threshold slider allows users to explore different levels of warming, such as 1.5°C, 2°C, and 3°C. This helps answer different questions about how soon certain levels of warming might occur.</p>
+    <p>The emissions selector allows users to compare different possible futures while keeping the warming threshold fixed. Switching between scenarios makes it easier to see which regions experience earlier crossings under higher emissions and which areas may avoid reaching a threshold altogether.</p>
+    <p>We also included a tooltip that displays the latitude, longitude, and crossing year when users hover over a location. This provides more specific information without overcrowding the map with labels.</p>
+    <p>Above the map, we display summary statistics showing the percentage of Earth's area that had already reached the threshold by 2000 and the percentage that reaches it by 2100. We included these statistics to give users a broader understanding of the results beyond individual locations.</p>
+    <p>Finally, the reset button allows users to return to the original map view after exploring different regions and settings.</p>
+
+    <h3>3.4 Limitations and Uncertainty</h3>
+    <p>One important decision we made was to be transparent about the limitations of our data. Our visualization uses only one climate model and one ensemble member, meaning it does not capture the full range of possible climate outcomes.</p>
+    <p>The map should therefore be viewed as one possible projection rather than an exact prediction of when individual locations will experience certain levels of warming. Other climate models and simulation runs could produce different results.</p>
+    <p>We also acknowledge that our 1° grid cannot capture smaller-scale geographic differences. Our goal was to highlight broad global patterns rather than provide precise local predictions.</p>
+    <p>We included a "How this map is made" section directly on the webpage so users can understand these limitations without having to look elsewhere.</p>
+
+    <h2>4. Development Process</h2>
+
+    <h3>4.1 Exploration and Planning</h3>
+    <p>We started by exploring the climate dataset and thinking about how to communicate climate change in a way that would be more interactive than a traditional temperature-over-time graph. We eventually settled on mapping the first year each location reaches a warming threshold because it gave us a clear question to build the entire visualization around.</p>
+
+    <h3>4.2 Data Processing</h3>
+    <p>We used a Jupyter notebook for our exploratory data analysis and data processing. This allowed us to examine the climate data, calculate warming relative to the pre-industrial baseline, apply annual averaging and smoothing, and determine the first crossing year for each grid cell.</p>
+    <p>After processing the data, we prepared it for the visualization so that the different thresholds and emissions scenarios could be accessed interactively.</p>
+
+    <h3>4.3 Building the Visualization</h3>
+    <p>We built the webpage using HTML and CSS, with JavaScript and D3.js handling the interactive map. We separated the project into different files for the page structure, styling, and visualization logic, which made it easier to organize and modify different parts of the project.</p>
+    <p>One of our main priorities was making sure the visualization remained responsive when users changed thresholds or emissions scenarios. We also implemented zooming, panning, tooltips, and the summary statistics to make exploring the data more engaging.</p>
+
+    <h3>4.4 Iteration and Refinement</h3>
+    <p>As we developed the visualization, we focused on making the information easier to interpret. We added separate colors for locations that had already crossed a threshold and locations that never crossed by 2100. We also incorporated a legend to make the color scale more understandable.</p>
+    <p>Another important improvement was adding the methodology section directly to the webpage. Since climate projections can easily be misunderstood as exact predictions, we wanted users to understand where the data came from and what its limitations were.</p>
+    <p>We also added horizontal map looping and a reset button to make navigating the world map more convenient.</p>
+
+    <h3>4.5 Future Improvements</h3>
+    <p>If we continued working on this project, one of our biggest improvements would be incorporating additional climate models and ensemble members. This would allow us to show how much projected crossing years vary rather than relying on a single simulation.</p>
+    <p>We would also like to add an option for users to click on a location and view its full temperature history. This could provide more context about how that location approaches a warming threshold instead of only showing the final crossing year.</p>
+
+    <h3>4.6 Team Contributions and Time Spent</h3>
+    <p>Our team of three split the work equally, and each of us contributed to both the visualization and this write-up. In total we spent roughly 20 people-hours on the project.</p>
+    <p>The most time-consuming part was building the dynamic visualization. Our map has 64,800 grid cells (180 × 360) that all need to recolor when the user moves the threshold slider or switches emissions scenarios, so keeping that responsive took the most iteration. We also had to decide how to structure the precomputed crossing-year data so that every threshold and scenario combination could be loaded quickly without a server. Getting zoom, pan, and the horizontal looping to work together was another sticking point, since the map had to wrap around the International Date Line while the tooltip and reset button still behaved correctly. Handling the special cases also required care so they didn’t get mixed up with ordinary crossing years on the color scale.</p>
+
+    <h2>5. Reflection</h2>
+    <p>One of the biggest things we learned from this project was how much the way data is presented can change the questions people ask about it. Instead of simply showing how temperatures increase over time, we focused on when different parts of the world reach specific warming thresholds. This made the visualization more geographically focused and gave users a different perspective on the effects of climate change.</p>
+    <p>We also learned that creating an effective visualization involves more than just making the data look appealing. Decisions about color, interaction, data processing, and even how limitations are communicated all affect how someone interprets the results.</p>
+    <p>Overall, we wanted to create something that people could explore on their own while developing a better understanding of how climate change affects different parts of the world. We hope the visualization makes it easier to see that climate change is not just a single global number, but an issue that unfolds differently depending on where you look and what future path we take.</p>
+  </article>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
