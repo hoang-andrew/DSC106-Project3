@@ -115,9 +115,14 @@
     <p>The biggest improvement would be adding more climate models and ensemble members so we could show how much the crossing years vary instead of relying on one run. We would also like to let a viewer click a place to see its full temperature history, so they can see how it approaches the threshold and not only the final crossing year.</p>
 
     <h3>4.6 Team Contributions and Time Spent</h3>
-    <p>[TEAM: write who did what, for example who did the notebook data processing, who built the D3 map and controls, who did the tooltip and zoom, who did the write-up and testing.]</p>
-    <p>We spent roughly 20 people-hours in total. The most time-consuming parts were getting the data into the right shape and getting the map to behave in the browser: making recoloring 64,800 cells fast, finding and fixing the data and grid problems above, and getting zoom, pan, sideways looping, the tooltip and the reset button to work together.</p>
-
+    <p>Our team of three split the work by stage of the project:</p>
+    <ul>
+      <li><strong>Xuan</strong> did the exploratory data analysis and the matplotlib plots in the notebook, including the original graphs (up to the crossing-year map) that the final D3 visualization is based on.</li>
+      <li><strong>Thomas</strong> started the translation of the matplotlib plot into D3, and then fixed up the wording and placement of the different elements of the graph (title, subtitle, legend and labels).</li>
+      <li><strong>Andrew</strong> added panning and zooming, added more detail to the graph, and made the sideways scrolling continuous so the map loops around the globe.</li>
+    </ul>
+    <p>All three of us worked on the write-up together.</p>
+    <p>We spent roughly 15 people-hours in total. The most time-consuming parts were getting the data into the right shape and getting the map to behave in the browser: making recoloring 64,800 cells fast, finding and fixing the data and grid problems above, and getting zoom, pan, sideways looping, the tooltip and the reset button to work together.</p>
     <h2>5. Reflection</h2>
     <p>The way the data is presented changes the questions people ask. Showing temperature over time answers "how much", while mapping the first year a threshold is reached answers "when and where", and the map makes the geographic differences much easier to see.</p>
     <p>We also learned that a lot of work happens outside the chart. Decisions about baselines, smoothing, grid size, color, and how to state limitations all change how a viewer reads the result, and bugs in the data (like the stale grid and the date line stripe) only appeared when we looked at the actual map.</p>
